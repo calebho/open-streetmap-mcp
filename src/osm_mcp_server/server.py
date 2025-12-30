@@ -16,7 +16,7 @@ class OSMClient:
         self.cache = {}  # Simple in-memory cache
     
     async def connect(self):
-        self.session = aiohttp.ClientSession()
+        self.session = aiohttp.ClientSession(trust_env=True)
         
     async def disconnect(self):
         if self.session:
