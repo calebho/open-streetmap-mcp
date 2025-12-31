@@ -742,7 +742,7 @@ async def get_place_resource(query: str) -> str:
     Returns:
         JSON string with place information
     """
-    async with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession(trust_env=True) as session:
         nominatim_url = "https://nominatim.openstreetmap.org/search"
         async with session.get(
             nominatim_url,
@@ -788,7 +788,7 @@ async def get_map_style(style: str, z: int, x: int, y: int) -> Tuple[bytes, str]
     
     tile_url = tile_servers[style].replace("{z}", str(z)).replace("{x}", str(x)).replace("{y}", str(y))
     
-    async with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession(trust_env=True) as session:
         async with session.get(tile_url) as response:
             if response.status == 200:
                 tile_data = await response.read()
@@ -865,8 +865,8 @@ async def find_schools_nearby(
     """
     
     query = query.replace("{bbox}", f"{bbox[1]},{bbox[0]},{bbox[3]},{bbox[2]}")
-    
-    async with aiohttp.ClientSession() as session:
+
+    async with aiohttp.ClientSession(trust_env=True) as session:
         async with session.post(overpass_url, data={"data": query}) as response:
             if response.status == 200:
                 data = await response.json()
@@ -1110,8 +1110,8 @@ async def find_ev_charging_stations(
     """
     
     query = query.replace("{bbox}", f"{bbox[1]},{bbox[0]},{bbox[3]},{bbox[2]}")
-    
-    async with aiohttp.ClientSession() as session:
+
+    async with aiohttp.ClientSession(trust_env=True) as session:
         async with session.post(overpass_url, data={"data": query}) as response:
             if response.status == 200:
                 data = await response.json()
@@ -1319,9 +1319,9 @@ async def analyze_neighborhood(
         """
         
         query = query.replace("{bbox}", f"{bbox[1]},{bbox[0]},{bbox[3]},{bbox[2]}")
-        
+
         try:
-            async with aiohttp.ClientSession() as session:
+            async with aiohttp.ClientSession(trust_env=True) as session:
                 async with session.post(overpass_url, data={"data": query}) as response:
                     if response.status == 200:
                         data = await response.json()
@@ -1513,8 +1513,8 @@ async def find_parking_facilities(
     """
     
     query = query.replace("{bbox}", f"{bbox[1]},{bbox[0]},{bbox[3]},{bbox[2]}")
-    
-    async with aiohttp.ClientSession() as session:
+
+    async with aiohttp.ClientSession(trust_env=True) as session:
         async with session.post(overpass_url, data={"data": query}) as response:
             if response.status == 200:
                 data = await response.json()
